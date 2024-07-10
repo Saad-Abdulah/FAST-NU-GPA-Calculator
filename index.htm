@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="FASTGPACALCULATOR.css">
+    <link rel="icon" type="image/jpg" href="Images/fast.jpg" class="circle-img">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAST_GPA_CALCULATOR</title>
+</head>
+<body>
+    <header>
+        <h4>Welcome to the FAST GPA Calculator</h4>
+        <div class="buttons">
+            <a href="https://www.nu.edu.pk/Home">Home</a>
+            <a href="https://www.nu.edu.pk/Student/Grading">Grading</a>
+            <a href="Images/FAST NU Criteria.jpeg">Criteria</a>
+            <a href="https://www.youtube.com/watch?v=UBK1DE0kRd4">Calculation</a>
+            <div class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Mails &#x25BC;</a> <!-- Down arrow symbol -->
+                <div class="dropdown-content">
+                    <a href="Images/Director and Hod's Mails.jpeg">Director & HOD's</a>
+                    <a href="Images/Academics Mails.jpeg">Academics & FSM</a>
+                </div>
+            </div>
+            <a href="https://flexstudent.nu.edu.pk/Login">Flex</a>
+            <a href="https://www.nu.edu.pk/home/ContactUs">Contact Us</a>
+            <div class="theme-switcher" id="theme-switcher">
+                <img src="Images/moon.jpg" alt="Switch to Dark Mode" id="theme-icon">
+            </div>
+        </div>
+    </header><br /><br />
+    <div class="calculator" id="calculator">
+        <p class="sgpaheading">SGPA Calculator</p>
+        <table id="courses-table">
+            <tr class="headings">
+                <th>Course (optional)</th>
+                <th>Credits</th>
+                <th>Grade</th>
+            </tr>
+            <tr>
+                <td><input type="text" id="course1" placeholder="Programming"></td>
+                <td><input type="number" id="credits1" value="3" min="0" max="3"></td>
+                <td>
+                    <select id="grade1" class="grade">
+                        <option value="4">A+</option>
+                        <option value="4">A</option>
+                        <option value="3.7">A-</option>
+                        <option value="3.3">B+</option>
+                        <option value="3">B</option>
+                        <option value="2.7">B-</option>
+                        <option value="2.3">C+</option>
+                        <option value="2">C</option>
+                        <option value="1.7">C-</option>
+                        <option value="1.3">D+</option>
+                        <option value="1">D</option>
+                        <option value="0">F</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text" id="course2" placeholder="Calculus"></td>
+                <td><input type="number" id="credits2" value="3" min="0" max="3"></td>
+                <td>
+                    <select id="grade2" class="grade">
+                        <option value="4">A+</option>
+                        <option value="4">A</option>
+                        <option value="3.7">A-</option>
+                        <option value="3.3">B+</option>
+                        <option value="3">B</option>
+                        <option value="2.7">B-</option>
+                        <option value="2.3">C+</option>
+                        <option value="2">C</option>
+                        <option value="1.7">C-</option>
+                        <option value="1.3">D+</option>
+                        <option value="1">D</option>
+                        <option value="0">F</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text" id="course3" placeholder="English"></td>
+                <td><input type="number" id="credits3" value="3" min="0" max="3"></td>
+                <td>
+                    <select id="grade3" class="grade">
+                        <option value="4">A+</option>
+                        <option value="4">A</option>
+                        <option value="3.7">A-</option>
+                        <option value="3.3">B+</option>
+                        <option value="3">B</option>
+                        <option value="2.7">B-</option>
+                        <option value="2.3">C+</option>
+                        <option value="2">C</option>
+                        <option value="1.7">C-</option>
+                        <option value="1.3">D+</option>
+                        <option value="1">D</option>
+                        <option value="0">F</option>
+                    </select>
+                </td>
+            </tr>
+            <!-- Placeholder row for additional course -->
+            <tr id="additional-course-row" style="display:none;">
+                <td><input type="text" class="course" placeholder="Course Name"></td>
+                <td><input type="number" class="credits" value="3" min="0" max="3"></td>
+                <td>
+                    <select class="grade">
+                        <option value="4">A+</option>
+                        <option value="4">A</option>
+                        <option value="3.7">A-</option>
+                        <option value="3.3">B+</option>
+                        <option value="3">B</option>
+                        <option value="2.7">B-</option>
+                        <option value="2.3">C+</option>
+                        <option value="2">C</option>
+                        <option value="1.7">C-</option>
+                        <option value="1.3">D+</option>
+                        <option value="1">D</option>
+                        <option value="0">F</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <button onclick="addCourse()">Add Course</button>
+        <button onclick="removeCourse()">Remove Course</button>
+        <button id="calculateGPAButton" onclick="calculateGPA()">Calculate</button>
+        <button onclick="clearFields()">Clear</button>
+        <div id="gpa-result" class="gpa-box">SGPA : 0.0</div>
+        <button id="cgpaButton" class="cgpacalculate" onclick="calculateCGPA()" style="display:none;">Calculate CGPA</button>
+    </div> 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const themeSwitcher = document.getElementById('theme-switcher');
+            const themeIcon = document.getElementById('theme-icon');
+            const calculator = document.querySelector('.calculator');
+            const gpaBox = document.getElementById('gpa-result');
+            function updateBoxShadow() {
+                if (document.body.classList.contains('dark-mode')) {
+                    calculator.style.boxShadow = '7px 10px 20px rgba(216, 239, 211, 0.9)';
+                } else {
+                    calculator.style.boxShadow = '12px 15px 20px rgba(0, 0, 0, 0.9)';
+                }
+            }
+
+            // Ensure the dark-mode class is added first
+            if (document.body.classList.contains('dark-mode')) {
+                themeIcon.src = 'Images/sun.jpg';
+                themeIcon.alt = 'Switch to Light Mode';
+                gpaBox.classList.add('dark-mode');
+            } else {
+                themeIcon.src = 'Images/moon.jpg';
+                themeIcon.alt = 'Switch to Dark Mode';
+                gpaBox.classList.remove('dark-mode');
+            }
+
+            document.body.classList.add('dark-mode'); // Ensure dark-mode is applied first
+            themeIcon.src = 'Images/sun.jpg';
+            updateBoxShadow(); // Apply the box-shadow based on the initial theme
+
+            themeSwitcher.addEventListener('click', function () {
+                document.body.classList.toggle('dark-mode');
+                gpaBox.classList.toggle('dark-mode');
+                updateBoxShadow();
+
+                if (document.body.classList.contains('dark-mode')) {
+                    themeIcon.src = 'Images/sun.jpg';
+                    themeIcon.alt = 'Switch to Light Mode';
+                } else {
+                    themeIcon.src = 'Images/moon.jpg';
+                    themeIcon.alt = 'Switch to Dark Mode';
+                }
+            });
+        });
+
+
+        let courseCount = 3;
+        function addCourse() {
+            courseCount++;
+            let table = document.getElementById("courses-table");
+            let newRow = table.insertRow(-1);
+            newRow.innerHTML = `
+                                <td><input type="text" id="course${courseCount}" placeholder="Course Name"></td>
+                                <td><input type="number" id="credits${courseCount}" value="3" min="0" max="3"></td>
+                                <td>
+                                    <select id="grade${courseCount}">
+                                        <option value="4">A+</option>
+                                        <option value="4">A</option>
+                                        <option value="3.7">A-</option>
+                                        <option value="3.3">B+</option>
+                                        <option value="3">B</option>
+                                        <option value="2.7">B-</option>
+                                        <option value="2.3">C+</option>
+                                        <option value="2">C</option>
+                                        <option value="1.7">C-</option>
+                                        <option value="1.3">D+</option>
+                                        <option value="1">D</option>
+                                        <option value="0">F</option>
+                                    </select>
+                                </td>`;
+        }
+        function removeCourse() {
+            let table = document.getElementById("courses-table");
+            if (table.rows.length > 4) {
+                table.deleteRow(-1);
+                courseCount--;
+            }
+        }
+        function calculateGPA() {
+            let totalPoints = 0;
+            let totalCredits = 0;
+            for (let i = 1; i <= courseCount; i++) {
+                const grade = parseFloat(document.getElementById(`grade${i}`).value);
+                const credits = parseFloat(document.getElementById(`credits${i}`).value);
+                totalPoints += grade * credits;
+                totalCredits += credits;
+            }
+            const gpa = totalCredits === 0 ? 0 : totalPoints / totalCredits;
+            document.getElementById("gpa-result").innerHTML = `SGPA : ${roundGPA(gpa)}`;
+            if (gpa > 0) {
+                document.getElementById("cgpaButton").style.display = "inline-block";
+                syncSGPAWithCGPA(gpa.toFixed(2));
+            } else {
+                document.getElementById("cgpaButton").style.display = "none";
+            }
+        }
+        function roundGPA(gpa) {
+            let multiplier = Math.pow(10, 2); // 2 decimal places
+            let adjustedGPA = Math.floor(gpa * 1000) / 1000; // Truncate to 3 decimal places
+            let thirdDecimal = Math.round((gpa * 1000) % 10); // Extract the third decimal place
+
+            if (thirdDecimal >= 5) {
+                adjustedGPA = Math.ceil(adjustedGPA * 100) / 100;
+            } else {
+                adjustedGPA = Math.floor(adjustedGPA * 100) / 100;
+            }
+
+            return adjustedGPA.toFixed(2);
+        }
+        function calculateCGPA() {
+            document.getElementById("cgpaButton").style.display = "none";
+            let sgpa = parseFloat(document.getElementById('gpa-result').textContent.split(':')[1].trim());
+            let cgpaDiv = document.getElementById("cgpa-calculator");
+            if (!cgpaDiv) {
+                cgpaDiv = document.createElement("div");
+                cgpaDiv.id = "cgpa-calculator";
+                cgpaDiv.innerHTML = `
+                <p class="sgpaheading">CGPA Calculator</p>
+                <label for="semester" style="margin-left: 20px;">Semester :</label></br>
+                <input type="number" id="semester" value="1" min="1" max="8" onchange="handleSemesterChange()" style="margin-left: 20px; width:48%;">
+                </br><label for="previous-cgpa" style="margin-left: 20px;">Previous CGPA :</label></br>
+                <input type="number" id="previous-cgpa" step="0.01" min="0" max="4" readonly style="margin-left: 20px; width:48%;"></br>
+                <label for="current-sgpa" style="margin-left: 20px;">Current SGPA :</label></br>
+                <input type="number" id="current-sgpa" step="0.01" min="0" max="4" value="${sgpa}" style="margin-left: 20px; width:48%;">
+                </br><button onclick="calculateFinalCGPA()" style="margin-left: 180px; width:30%;">Calculate now</button>
+                <div id="cgpa-result" class="gpa-box">CGPA : 0.0</div>`;
+                document.getElementById("calculator").appendChild(cgpaDiv);
+            } else {
+                document.getElementById("current-sgpa").value = sgpa;
+            }
+            handleSemesterChange();
+        }
+
+        function handleSemesterChange() {
+            let semester = document.getElementById('semester').value;
+            let previousCGPAInput = document.getElementById('previous-cgpa');
+            let sgpa = parseFloat(document.getElementById('current-sgpa').value);
+
+            if (semester == 1) {
+                previousCGPAInput.value = sgpa;
+                previousCGPAInput.readOnly = true;
+            } else {
+                previousCGPAInput.value = "";
+                previousCGPAInput.readOnly = false;
+            }
+        }
+        function calculateFinalCGPA() {
+            let semester = parseInt(document.getElementById('semester').value);
+            let previousCGPA = parseFloat(document.getElementById('previous-cgpa').value);
+            let currentSGPA = parseFloat(document.getElementById('current-sgpa').value);
+
+            let finalCGPA = ((previousCGPA * (semester - 1)) + currentSGPA) / semester;
+            document.getElementById('cgpa-result').innerHTML = `CGPA : ${roundGPA(finalCGPA)}`;
+        }
+        function syncSGPAWithCGPA(sgpa) {
+            if (document.getElementById('current-sgpa')) {
+                document.getElementById('current-sgpa').value = sgpa;
+                handleSemesterChange();
+            }
+        }
+        function clearFields() {
+            const inputs = document.querySelectorAll('input[type="text"], input[type="number"]');
+            inputs.forEach(input => {
+                if (input.type === 'number') {
+                    input.value = input.id.includes('credits') ? '3' : '';
+                } else {
+                    input.value = '';
+                }
+            });
+            const selects = document.querySelectorAll('select');
+            selects.forEach(select => {
+                select.value = '4';
+            });
+            document.getElementById('gpa-result').innerHTML = 'SGPA : 0.0';
+            document.getElementById('cgpaButton').style.display = 'none';
+            const cgpaCalculator = document.getElementById('cgpa-calculator');
+            if (cgpaCalculator) {
+                cgpaCalculator.remove();
+            }
+        }
+
+    </script>
+</body>
+</html>
